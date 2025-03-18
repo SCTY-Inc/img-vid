@@ -455,9 +455,16 @@ with tab2:
                             video_path = os.path.join(st.session_state.temp_dir, video_filename)
                             
                             try:
+                                # Get the image data
+                                img_data = st.session_state.generated_images[img_idx]
+                                
+                                # Read image bytes from file
+                                with open(img_data["file_path"], 'rb') as f:
+                                    image_bytes = f.read()
+                                
                                 # Generate the video using the wan2 module
                                 video_path = wan2.generate_video_from_bytes(
-                                    img_data["data"],
+                                    image_bytes,  # Pass raw bytes, not base64 string
                                     prompt,
                                     output_path=video_path
                                 )
@@ -468,8 +475,11 @@ with tab2:
                                 
                                 # Force a rerun to display the video
                                 st.rerun()
+                                    
                             except Exception as e:
                                 st.error(f"Error generating video: {str(e)}")
+                                import traceback
+                                st.error(f"Full error: {traceback.format_exc()}")
                                 st.session_state.video_generation_state["generating"] = False
                     else:
                         st.warning("Please enter a prompt for the video.")

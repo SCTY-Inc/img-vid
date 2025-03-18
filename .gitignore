@@ -24,7 +24,7 @@ var/
 *.egg
 
 # Virtual Environment
-venv/
+.venv/
 ENV/
 
 # Generated files
@@ -38,3 +38,5 @@ generated_*
 .vscode/
 *.swp
 *.swo 
+
+/temp/*
